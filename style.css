@@ -1,0 +1,35 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#clock {
+    font-size: 3em;
+}
+
+#search-bar input {
+    padding: 10px;
+    font-size: 1em;
+}
+
+#quote {
+    margin-top: 20px;
+    font-style: italic;
+}
+
+#quick-links a {
+    color: #fff;
+    margin: 10px;
+    text-decoration: none;
+    font-size: 1.2em;
+}
