@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Custom New Tab",
-  "version": "1.0",
-  "description": "A new tab extension with widgets and wallpapers.",
+  "name": "Enhanced New Tab",
+  "version": "1.1",
+  "description": "A visually appealing new tab with widgets and customization.",
   "permissions": ["storage"],
   "chrome_url_overrides": {
     "newtab": "index.html"

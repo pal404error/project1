@@ -8,21 +8,30 @@
 </head>
 <body>
     <div id="dashboard">
-        <div id="clock"></div>
-        <div id="weather">
+        <div class="widget" id="clock"></div>
+        <div class="widget" id="weather">
             <p id="temperature"></p>
             <p id="humidity"></p>
             <p id="location"></p>
         </div>
-        <div id="search-bar">
-            <input type="text" placeholder="Type here...">
+        <div class="widget" id="search-bar">
+            <input type="text" placeholder="Search the web...">
             <button>Search</button>
         </div>
-        <div id="quote"></div>
-        <div id="quick-links">
-            <a href="https://youtube.com" target="_blank">YouTube</a>
-            <a href="https://mail.google.com" target="_blank">Email</a>
-            <a href="https://web.telegram.org" target="_blank">Telegram</a>
+        <div class="widget" id="quote"></div>
+        <div class="widget" id="todo-list">
+            <h3>To-Do List</h3>
+            <ul id="tasks"></ul>
+            <input type="text" id="new-task" placeholder="Add a task...">
+            <button onclick="addTask()">Add</button>
+        </div>
+        <div class="widget" id="news">
+            <h3>Latest News</h3>
+            <ul id="news-feed"></ul>
+        </div>
+        <div class="widget" id="background-settings">
+            <h3>Customize Background</h3>
+            <input type="color" id="bg-color" onchange="changeBackground()">
         </div>
     </div>
     <script src="script.js"></script>

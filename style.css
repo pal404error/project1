@@ -1,35 +1,63 @@
 body {
-    background-color: #000;
+    background-color: #121212;
     color: #fff;
     font-family: Arial, sans-serif;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 #dashboard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 80%;
+    max-width: 1200px;
+}
+
+.widget {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
 }
 
 #clock {
-    font-size: 3em;
+    font-size: 2em;
+    font-weight: bold;
 }
 
 #search-bar input {
     padding: 10px;
-    font-size: 1em;
+    width: 70%;
+    border: none;
+    border-radius: 5px;
 }
 
 #quote {
-    margin-top: 20px;
     font-style: italic;
 }
 
-#quick-links a {
-    color: #fff;
-    margin: 10px;
-    text-decoration: none;
-    font-size: 1.2em;
+#todo-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+#todo-list li {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+#news ul {
+    list-style: none;
+    padding: 0;
+}
+
+#news li {
+    font-size: 0.9em;
+    margin: 5px 0;
 }
