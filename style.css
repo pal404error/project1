@@ -24,40 +24,335 @@ body {
     text-align: center;
 }
 
-#clock {
-    font-size: 2em;
-    font-weight: bold;
+/* Analog Clock */
+#analog-clock {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin: 0 auto;
 }
 
-#search-bar input {
-    padding: 10px;
-    width: 70%;
+.hand {
+    position: absolute;
+    width: 50%;
+    height: 2px;
+    background-color: white;
+    top: 50%;
+    transform-origin: 100%;
+    transform: rotate(90deg);
+}
+
+#hour-hand { width: 35%; height: 4px; background-color: #fff; }
+#minute-hand { width: 45%; height: 3px; background-color: #ccc; }
+#second-hand { width: 50%; height: 2px; background-color: red; }
+
+#clock-center {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* Include the padding and border in an element's total width and height */
+* {
+    box-sizing: border-box;
+  }
+  
+  /* Remove margins and padding from the list */
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Style the list items */
+  ul li {
+    cursor: pointer;
+    position: relative;
+    padding: 12px 8px 12px 40px;
+    background: #eee;
+    font-size: 18px;
+    transition: 0.2s;
+  
+    /* make the list items unselectable */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Set all odd list items to a different color (zebra-stripes) */
+  ul li:nth-child(odd) {
+    background: #f9f9f9;
+  }
+  
+  /* Darker background-color on hover */
+  ul li:hover {
+    background: #ddd;
+  }
+  
+  /* When clicked on, add a background color and strike out text */
+  ul li.checked {
+    background: #888;
+    color: #fff;
+    text-decoration: line-through;
+  }
+  
+  /* Add a "checked" mark when clicked on */
+  ul li.checked::before {
+    content: '';
+    position: absolute;
+    border-color: #fff;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    top: 10px;
+    left: 16px;
+    transform: rotate(45deg);
+    height: 15px;
+    width: auto;
+  }
+  
+  /* Style the close button */
+  .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 12px 16px 12px 16px;
+  }
+  
+  .close:hover {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  /* Style the header */
+  .header {
+    background-color: #f44336;
+    padding: 30px 40px;
+    color: white;
+    text-align: center;
+  }
+  
+  /* Clear floats after the header */
+  .header:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Style the input */
+  input {
+    margin: 0;
     border: none;
-    border-radius: 5px;
+    border-radius: 0;
+    width: auto;
+    padding: 10px;
+    float: left;
+    font-size: 16px;
+  }
+  
+  /* Style the "Add" button */
+  .addBtn {
+    padding: 10px;
+    width: auto;
+    background: #d9d9d9;
+    color: #555;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 0;
+  }
+  
+  .addBtn:hover {
+    background-color: #bbb;
+  }
+
+
+
+
+/* try CSS */
+
+
+
+.todo-container{
+  background: rgb(41, 33, 33);
+  width: auto;
+  margin: 0 auto;
+  border: 2px solid #0033ff;
+  padding: 20px;
+  color: white;
+  border-radius: 15px;
 }
 
-#quote {
-    font-style: italic;
+#input-box{
+  width: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 5px;
+  font-size: 20px;
+}
+ 
+#input-button{
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.4s;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2e60ea;
 }
 
-#todo-list ul {
-    list-style: none;
-    padding: 0;
+.task button{
+  background: rgb(12, 124, 251);
+  border-radius: 5px;
+  margin: 0px 5px;
+  padding: 3px 5px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  float: right;
 }
 
-#todo-list li {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 5px;
-    margin: 5px 0;
-    border-radius: 5px;
+hr{
+  border: 1px solid #0033ff;
 }
 
-#news ul {
-    list-style: none;
-    padding: 0;
+#header{
+  margin: 5px;
+  font-size: 20px;
+  text-align: center;
 }
 
-#news li {
-    font-size: 0.9em;
-    margin: 5px 0;
+h1{
+  margin-bottom: 20px; 
 }
+
+#input-button:hover {
+  background-color: #9eb7fd; 
+} 
+
+ul{
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  text-align:left;
+}
+
+li {
+  border: 1px solid white;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.edit-btn, .delete-btn, .complete-btn{
+  float: right;
+  color:crimson;
+  cursor: pointer;
+  margin: 3px 5px;
+  border: none;
+  padding: 3px 5px;
+  background: none;  
+} 
+
+.completed {
+  text-decoration: line-through;
+  color: gray;
+  border: 1px solid gray;
+}
+
+/* try ends */
+
+
+
+/* weather try start */
+
+.container {
+  text-align: center;
+}
+
+.weather-card {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  width: 450px;
+}
+
+.weather-card:hover {
+  transform: scale(1.05);
+}
+
+#city-input {
+  padding: 15px;
+  margin: 10px 0;
+  width: 70%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+#city-input:focus {
+  outline: none;
+  border-color: #2196F3;
+}
+
+#city-input::placeholder {
+  color: #aaa;
+}
+
+#city-input-btn {
+  padding: 10px;
+  background-color: #2196F3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#city-input-btn:hover {
+  background-color: #1565C0;
+}
+
+#weather-info {
+  display: none;
+}
+
+#weather-icon {
+  width: 100px;
+  height: 100px;
+}
+
+#temperature {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+#description {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+#wind-speed {
+  font-size: 16px;
+  color: rgb(255, 0, 0);
+}
+
+#date {
+  font-size: 14px;
+  color: rgb(255, 0, 0);
+}
+/* weather try end */

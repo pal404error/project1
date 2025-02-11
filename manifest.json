@@ -1,11 +1,13 @@
 {
   "manifest_version": 3,
   "name": "Enhanced New Tab",
-  "version": "1.1",
-  "description": "A visually appealing new tab with widgets and customization.",
-  "permissions": ["storage"],
+  "version": "1.2",
+  "description": "A visually appealing new tab with working widgets and customization.",
+  "permissions": [
+    "storage",
+    "activeTab"
+],
   "chrome_url_overrides": {
     "newtab": "index.html"
-  },
-  "icons": {}
+  }
 }
