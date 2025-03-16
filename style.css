@@ -1,358 +1,486 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  /* Light mode variables */
+  --primary-color: #4f46e5;
+  --primary-light: #818cf8;
+  --secondary-color: #3730a3;
+  --widget-bg: rgba(255, 255, 255, 0.95);
+  --text-color: #1e293b;
+  --text-secondary: #64748b;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --border-radius: 20px;
+  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  --item-bg: #f1f5f9;
+  
+  /* Dark mode variables */
+  --dark-widget-bg: rgba(30, 41, 59, 0.95);
+  --dark-text-color: #f1f5f9;
+  --dark-text-secondary: #cbd5e1;
+  --dark-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+  --dark-bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --dark-item-bg: #334155;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --widget-bg: var(--dark-widget-bg);
+    --text-color: var(--dark-text-color);
+    --text-secondary: var(--dark-text-secondary);
+    --shadow: var(--dark-shadow);
+    --bg-gradient: var(--dark-bg-gradient);
+    --item-bg: var(--dark-item-bg);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-    background-color: #121212;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+  margin: 0;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  color: var(--text-color);
+  line-height: 1.5;
 }
 
 #dashboard {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    width: 80%;
-    max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 25px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .widget {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
+  background: var(--widget-bg);
+  border-radius: var(--border-radius);
+  padding: 25px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
-/* Analog Clock */
+.widget:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Widget Layouts */
+#clock-widget {
+  grid-column: span 3;
+  grid-row: span 2;
+}
+
+#weather {
+  grid-column: span 3;
+  grid-row: span 2;
+}
+
+#search-bar {
+  grid-column: span 6;
+}
+
+#quote {
+  grid-column: span 12;
+}
+
+#todo-list {
+  grid-column: span 6;
+  grid-row: span 3;
+}
+
+/* Clock Widget */
 #analog-clock {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 3px solid white;
-    margin: 0 auto;
+  width: 200px;
+  height: 200px;
+  border: 8px solid var(--primary-color);
+  border-radius: 50%;
+  margin: 0 auto;
+  position: relative;
+  background: var(--widget-bg);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .hand {
-    position: absolute;
-    width: 50%;
-    height: 2px;
-    background-color: white;
-    top: 50%;
-    transform-origin: 100%;
-    transform: rotate(90deg);
+  background: var(--text-color);
+  position: absolute;
+  transform-origin: bottom center;
+  border-radius: 5px;
+  transition: background-color 0.3s;
 }
 
-#hour-hand { width: 35%; height: 4px; background-color: #fff; }
-#minute-hand { width: 45%; height: 3px; background-color: #ccc; }
-#second-hand { width: 50%; height: 2px; background-color: red; }
-
-#clock-center {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background-color: white;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* Search Bar */
+#search-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
-
-/* Include the padding and border in an element's total width and height */
-* {
-    box-sizing: border-box;
-  }
-  
-  /* Remove margins and padding from the list */
-  ul {
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Style the list items */
-  ul li {
-    cursor: pointer;
-    position: relative;
-    padding: 12px 8px 12px 40px;
-    background: #eee;
-    font-size: 18px;
-    transition: 0.2s;
-  
-    /* make the list items unselectable */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  
-  /* Set all odd list items to a different color (zebra-stripes) */
-  ul li:nth-child(odd) {
-    background: #f9f9f9;
-  }
-  
-  /* Darker background-color on hover */
-  ul li:hover {
-    background: #ddd;
-  }
-  
-  /* When clicked on, add a background color and strike out text */
-  ul li.checked {
-    background: #888;
-    color: #fff;
-    text-decoration: line-through;
-  }
-  
-  /* Add a "checked" mark when clicked on */
-  ul li.checked::before {
-    content: '';
-    position: absolute;
-    border-color: #fff;
-    border-style: solid;
-    border-width: 0 2px 2px 0;
-    top: 10px;
-    left: 16px;
-    transform: rotate(45deg);
-    height: 15px;
-    width: auto;
-  }
-  
-  /* Style the close button */
-  .close {
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 12px 16px 12px 16px;
-  }
-  
-  .close:hover {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  /* Style the header */
-  .header {
-    background-color: #f44336;
-    padding: 30px 40px;
-    color: white;
-    text-align: center;
-  }
-  
-  /* Clear floats after the header */
-  .header:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  
-  /* Style the input */
-  input {
-    margin: 0;
-    border: none;
-    border-radius: 0;
-    width: auto;
-    padding: 10px;
-    float: left;
-    font-size: 16px;
-  }
-  
-  /* Style the "Add" button */
-  .addBtn {
-    padding: 10px;
-    width: auto;
-    background: #d9d9d9;
-    color: #555;
-    float: left;
-    text-align: center;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-    border-radius: 0;
-  }
-  
-  .addBtn:hover {
-    background-color: #bbb;
-  }
-
-
-
-
-/* try CSS */
-
-
-
-.todo-container{
-  background: rgb(41, 33, 33);
-  width: auto;
-  margin: 0 auto;
-  border: 2px solid #0033ff;
-  padding: 20px;
-  color: white;
+#search-input {
+  flex: 1;
+  padding: 16px 25px;
+  border: 2px solid transparent;
   border-radius: 15px;
-}
-
-#input-box{
-  width: auto;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-right: 5px;
-  font-size: 20px;
-}
- 
-#input-button{
-  font-size: 20px;
-  cursor: pointer;
-  transition: 0.4s;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #2e60ea;
-}
-
-.task button{
-  background: rgb(12, 124, 251);
-  border-radius: 5px;
-  margin: 0px 5px;
-  padding: 3px 5px;
-  border: none;
-  cursor: pointer;
-  color: white;
-  float: right;
-}
-
-hr{
-  border: 1px solid #0033ff;
-}
-
-#header{
-  margin: 5px;
-  font-size: 20px;
-  text-align: center;
-}
-
-h1{
-  margin-bottom: 20px; 
-}
-
-#input-button:hover {
-  background-color: #9eb7fd; 
-} 
-
-ul{
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-  text-align:left;
-}
-
-li {
-  border: 1px solid white;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  padding: 10px;
-  margin-top: 10px;
-}
-
-.edit-btn, .delete-btn, .complete-btn{
-  float: right;
-  color:crimson;
-  cursor: pointer;
-  margin: 3px 5px;
-  border: none;
-  padding: 3px 5px;
-  background: none;  
-} 
-
-.completed {
-  text-decoration: line-through;
-  color: gray;
-  border: 1px solid gray;
-}
-
-/* try ends */
-
-
-
-/* weather try start */
-
-.container {
-  text-align: center;
-}
-
-.weather-card {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-  width: 450px;
-}
-
-.weather-card:hover {
-  transform: scale(1.05);
-}
-
-#city-input {
-  padding: 15px;
-  margin: 10px 0;
-  width: 70%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   font-size: 16px;
+  background: var(--item-bg);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
 }
 
-#city-input:focus {
+#search-input:focus {
   outline: none;
-  border-color: #2196F3;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
-#city-input::placeholder {
-  color: #aaa;
-}
-
-#city-input-btn {
-  padding: 10px;
-  background-color: #2196F3;
-  color: #fff;
+#search-bar button {
+  padding: 16px 32px;
+  background: var(--primary-color);
+  color: white;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  border-radius: 15px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
 }
 
-#city-input-btn:hover {
-  background-color: #1565C0;
+#search-bar button:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+/* Weather Card */
+.weather-card {
+  text-align: center;
+  padding: 20px 0;
 }
 
 #weather-info {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
-#weather-icon {
-  width: 100px;
-  height: 100px;
-}
-
-#temperature {
+#city-name {
   font-size: 24px;
-  font-weight: bold;
-  margin: 8px 0;
-}
-
-#description {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-#wind-speed {
-  font-size: 16px;
-  color: rgb(255, 0, 0);
+  font-weight: 600;
+  color: var(--text-color);
 }
 
 #date {
+  color: var(--text-secondary);
   font-size: 14px;
-  color: rgb(255, 0, 0);
 }
-/* weather try end */
+
+#temperature {
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+#description {
+  color: var(--text-secondary);
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
+#weather-icon {
+  width: 80px;
+  height: 80px;
+  margin: 10px 0;
+}
+
+/* Todo List */
+#todo-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#todo-container h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text-color);
+}
+
+#input-box {
+  width: 100%;
+  padding: 16px 25px;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  background: var(--item-bg);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease;
+}
+
+#input-box:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+#list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+#list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+#list-container::-webkit-scrollbar-track {
+  background: var(--item-bg);
+  border-radius: 3px;
+}
+
+#list-container::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 3px;
+}
+
+#list-container li {
+  padding: 16px 20px;
+  background: var(--item-bg);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+#list-container li:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateX(5px);
+}
+
+#list-container li.checked {
+  background: var(--item-bg);
+  color: var(--text-secondary);
+  text-decoration: line-through;
+}
+
+.counter-container {
+  margin-top: 20px;
+  padding: 15px;
+  background: var(--item-bg);
+  border-radius: 12px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Quote Widget */
+#quote {
+  font-style: italic;
+  text-align: center;
+  padding: 30px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-color);
+  position: relative;
+}
+
+#quote::before,
+#quote::after {
+  content: '"';
+  font-size: 48px;
+  color: var(--primary-light);
+  opacity: 0.2;
+  position: absolute;
+}
+
+#quote::before {
+  top: 10px;
+  left: 20px;
+}
+
+#quote::after {
+  bottom: 10px;
+  right: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  #clock-widget, #weather {
+    grid-column: span 6;
+  }
+  
+  #todo-list {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 1024px) {
+  #dashboard {
+    gap: 20px;
+    padding: 15px;
+  }
+  
+  #clock-widget, #weather {
+    grid-column: span 6;
+  }
+  
+  #search-bar {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  
+  #dashboard {
+    gap: 15px;
+    padding: 10px;
+  }
+  
+  .widget {
+    grid-column: span 12 !important;
+    padding: 20px;
+  }
+  
+  #search-bar {
+    flex-direction: column;
+  }
+  
+  #search-bar button {
+    width: 100%;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.widget {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Update the grid layout first */
+#quote {
+  grid-column: span 6;
+}
+
+#quote-2 {
+  grid-column: span 6;
+}
+
+/* Enhanced Quote Widgets Styling */
+.quote-content {
+  position: relative;
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+}
+
+#quote, #quote-2 {
+  font-style: italic;
+  text-align: center;
+  padding: 30px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-color);
+  position: relative;
+  overflow: hidden;
+  background: var(--widget-bg);
+  transition: all 0.3s ease;
+}
+
+#quote::before,
+#quote::after,
+.quote-icon {
+  font-size: 64px;
+  color: var(--primary-light);
+  opacity: 0.2;
+  position: absolute;
+}
+
+#quote::before {
+  content: '"';
+  top: 10px;
+  left: 20px;
+}
+
+#quote::after {
+  content: '"';
+  bottom: 10px;
+  right: 20px;
+}
+
+.quote-icon {
+  top: 10px;
+  left: 20px;
+}
+
+#quote-text-2, #quote p {
+  font-size: 18px;
+  color: var(--text-color);
+  margin: 20px 0;
+  z-index: 1;
+  position: relative;
+}
+
+#quote-author-2 {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--primary-color);
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+/* Hover effects */
+#quote:hover, #quote-2:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  #quote, #quote-2 {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 768px) {
+  #quote, #quote-2 {
+    padding: 20px;
+    font-size: 16px;
+  }
+  
+  .quote-icon {
+    font-size: 48px;
+  }
+}

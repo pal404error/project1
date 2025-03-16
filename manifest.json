@@ -5,8 +5,12 @@
   "description": "A visually appealing new tab with working widgets and customization.",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+     "https://api.openweathermap.org/*"
 ],
+"host_permissions": [
+    "https://api.openweathermap.org/*"
+  ],
   "chrome_url_overrides": {
     "newtab": "index.html"
   }

@@ -1,3 +1,62 @@
+// Weather API configuration
+const WEATHER_API_KEY = '08e262942a75425b206f76950a964fcf'; // You'll need to get an API key from OpenWeatherMap
+// Weather API configuration e with your actual API key
+const CITY = 'Vadodara';
+const COUNTRY_CODE = 'IN';
+
+// Function to fetch weather data
+async function getWeather() {
+    try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY},${COUNTRY_CODE}&appid=${WEATHER_API_KEY}&units=metric`);
+        
+        // Check if the response is ok
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Debug log - check what data we're receiving
+        console.log('Weather data:', data);
+
+        // Check if we have all the required data before updating the DOM
+        if (data && data.main && data.weather && data.weather[0]) {
+            // Update weather information
+            document.getElementById('date').textContent = new Date().toLocaleDateString('en-IN', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°C`;
+            document.getElementById('description').textContent = data.weather[0].description;
+            document.getElementById('wind-speed').textContent = `Wind: ${data.wind.speed} m/s`;
+            
+            // Update weather icon
+            const iconCode = data.weather[0].icon;
+            const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+            const weatherIcon = document.getElementById('weather-icon');
+            weatherIcon.src = iconUrl;
+            weatherIcon.alt = data.weather[0].description;
+            
+        } else {
+            throw new Error('Weather data is incomplete');
+        }
+        
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        document.getElementById('weather-info').innerHTML = `
+            <p style="color: red; padding: 20px;">
+                Unable to fetch weather data. Please check your API key and try again.
+            </p>`;
+    }
+}
+
+// Update weather immediately and then every 30 minutes
+getWeather();
+setInterval(getWeather, 30 * 60 * 1000);
+
 // var $ = jQuery;
 // $(document).ready(function(){  });
 
@@ -155,49 +214,228 @@ inputBox.addEventListener("keyup", function (event) {
 });
 
 
-//try end
+// ... existing weather code remains the same ...
 
-// weather try start
+// Search Bar Functionality
+function search() {
+  const searchInput = document.getElementById('search-input');
+  const searchQuery = searchInput.value.trim();
+  
+  if (searchQuery) {
+      // Default to Google search, but you can change this to any search engine
+      const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
+      window.open(searchUrl, '_blank');
+      searchInput.value = ''; // Clear the input after search
+  }
+}
 
-// const url =
-// 	'https://api.openweathermap.org/data/2.5/weather';
-// const apiKey =
-// 	'f00c38e0279b7bc85480c3fe775d518c';
+// Add event listener for Enter key in search input
+document.getElementById('search-input').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+      search();
+  }
+});
 
-//   document.addEventListener('DOMContentLoaded', function () {
-//     weatherFn('vadodara');
-// });
+// Background Settings Functionality
+function initializeBackgroundSettings() {
+  const bgColorPicker = document.getElementById('bg-color');
+  const dashboard = document.getElementById('dashboard');
+  
+  // Load saved background color from localStorage
+  const savedBgColor = localStorage.getItem('dashboardBgColor');
+  if (savedBgColor) {
+      document.body.style.background = savedBgColor;
+      bgColorPicker.value = savedBgColor;
+  }
 
-// async function weatherFn(cName) {
-//     const temp = `${url}?q=${'vadodara'}&appid=${apiKey}&units=metric`;
-//     try {
-//         const res = await fetch(temp);
-//         const data = await res.json();
-//         if (res.ok) {
-//             weatherShowFn(data);
-//         } else {
-//             alert('City not found. Please try again.');
-//         }
-//     } catch (error) {
-//         console.error('Error fetching weather data:', error);
-//     }
-// }
+  // Add background style options
+  const bgStyleSelect = document.createElement('select');
+  bgStyleSelect.id = 'bg-style';
+  bgStyleSelect.className = 'bg-setting-input';
+  
+  const styles = [
+      { value: 'solid', text: 'Solid Color' },
+      { value: 'gradient1', text: 'Gradient 1' },
+      { value: 'gradient2', text: 'Gradient 2' },
+      { value: 'gradient3', text: 'Gradient 3' }
+  ];
+
+  styles.forEach(style => {
+      const option = document.createElement('option');
+      option.value = style.value;
+      option.textContent = style.text;
+      bgStyleSelect.appendChild(option);
+  });
+
+  // Load saved background style
+  const savedBgStyle = localStorage.getItem('dashboardBgStyle') || 'gradient1';
+  bgStyleSelect.value = savedBgStyle;
+
+  // Add the select element to background settings
+  const backgroundSettings = document.getElementById('background-settings');
+  backgroundSettings.innerHTML = `
+      <h3>Customize Background</h3>
+      <div class="bg-setting-group">
+          <label for="bg-color">Color:</label>
+          <input type="color" id="bg-color" class="bg-setting-input">
+      </div>
+      <div class="bg-setting-group">
+          <label for="bg-style">Style:</label>
+          ${bgStyleSelect.outerHTML}
+      </div>
+      <div class="bg-setting-group">
+          <label for="bg-opacity">Opacity:</label>
+          <input type="range" id="bg-opacity" min="0" max="100" value="95" class="bg-setting-input">
+      </div>
+      <button id="reset-bg" class="bg-setting-button">Reset to Default</button>
+  `;
+
+  // Event Listeners for background settings
+  document.getElementById('bg-color').addEventListener('input', updateBackground);
+  document.getElementById('bg-style').addEventListener('change', updateBackground);
+  document.getElementById('bg-opacity').addEventListener('input', updateBackground);
+  document.getElementById('reset-bg').addEventListener('click', resetBackground);
+}
+
+function updateBackground() {
+  const color = document.getElementById('bg-color').value;
+  const style = document.getElementById('bg-style').value;
+  const opacity = document.getElementById('bg-opacity').value;
+  
+  let background;
+  switch(style) {
+      case 'solid':
+          background = color;
+          break;
+      case 'gradient1':
+          background = `linear-gradient(135deg, ${color} 0%, ${adjustColor(color, -30)} 100%)`;
+          break;
+      case 'gradient2':
+          background = `linear-gradient(45deg, ${color} 0%, ${adjustColor(color, 30)} 100%)`;
+          break;
+      case 'gradient3':
+          background = `radial-gradient(circle, ${color} 0%, ${adjustColor(color, -40)} 100%)`;
+          break;
+  }
+
+  document.body.style.background = background;
+  
+  // Update widget transparency
+  const widgets = document.querySelectorAll('.widget');
+  widgets.forEach(widget => {
+      widget.style.backgroundColor = `rgba(255, 255, 255, ${opacity / 100})`;
+  });
+
+  // Save settings
+  localStorage.setItem('dashboardBgColor', color);
+  localStorage.setItem('dashboardBgStyle', style);
+  localStorage.setItem('dashboardOpacity', opacity);
+}
+
+function adjustColor(color, amount) {
+  const hex = color.replace('#', '');
+  const r = Math.max(0, Math.min(255, parseInt(hex.substring(0, 2), 16) + amount));
+  const g = Math.max(0, Math.min(255, parseInt(hex.substring(2, 4), 16) + amount));
+  const b = Math.max(0, Math.min(255, parseInt(hex.substring(4, 6), 16) + amount));
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
+function resetBackground() {
+  const defaultColor = '#f5f7fa';
+  const defaultStyle = 'gradient1';
+  const defaultOpacity = 95;
+
+  document.getElementById('bg-color').value = defaultColor;
+  document.getElementById('bg-style').value = defaultStyle;
+  document.getElementById('bg-opacity').value = defaultOpacity;
+
+  updateBackground();
+}
+
+// Initialize background settings when the page loads
+document.addEventListener('DOMContentLoaded', initializeBackgroundSettings);
 
 
-// function weatherShowFn(data) {
-// 	$('#city-name').text(data.name);
-// 	$('#date').text(moment().
-// 		format('MMMM Do YYYY, h:mm:ss a'));
-// 	$('#temperature').
-// 		html(`${data.main.temp}°C`);
-// 	$('#description').
-// 		text(data.weather[0].description);
-// 	$('#wind-speed').
-// 		html(`Wind Speed: ${data.wind.speed} m/s`);
-// 	$('#weather-icon').
-// 		attr('src',
-// 			`...`);
-// 	$('#weather-info').fadeIn();
-// }
+// Function to fetch quotes
+async function getQuotes() {
+  try {
+      // Using proxy to handle CORS
+      const response = await fetch('https://cors-anywhere.herokuapp.com/https://api.quotable.io/quotes/random?limit=2', {
+          method: 'GET',
+          headers: {
+              'Accept': 'application/json',
+          }
+      });
 
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
+      const quotes = await response.json();
+      
+      // Update first quote widget with loading state
+      const quoteElement = document.getElementById('quote');
+      quoteElement.innerHTML = `
+          <p>${quotes[0].content}</p>
+          <p style="color: var(--primary-color); font-weight: 500; margin-top: 10px;">
+              — ${quotes[0].author}
+          </p>
+      `;
+      
+      // Update second quote widget
+      const quoteText2 = document.getElementById('quote-text-2');
+      const quoteAuthor2 = document.getElementById('quote-author-2');
+      
+      if (quoteText2 && quoteAuthor2) {
+          quoteText2.textContent = quotes[1].content;
+          quoteAuthor2.textContent = `— ${quotes[1].author}`;
+      }
+
+  } catch (error) {
+      console.error('Error fetching quotes:', error);
+      // Fallback quotes in case of API failure
+      const fallbackQuotes = [
+          {
+              content: "The best way to predict the future is to create it.",
+              author: "Peter Drucker"
+          },
+          {
+              content: "Innovation distinguishes between a leader and a follower.",
+              author: "Steve Jobs"
+          }
+      ];
+
+      // Update with fallback quotes
+      document.getElementById('quote').innerHTML = `
+          <p>${fallbackQuotes[0].content}</p>
+          <p style="color: var(--primary-color); font-weight: 500; margin-top: 10px;">
+              — ${fallbackQuotes[0].author}
+          </p>
+      `;
+      
+      document.getElementById('quote-text-2').textContent = fallbackQuotes[1].content;
+      document.getElementById('quote-author-2').textContent = `— ${fallbackQuotes[1].author}`;
+  }
+}
+
+// Initial quote load
+getQuotes();
+
+// Update quotes every 30 minutes
+setInterval(getQuotes, 30 * 60 * 1000);
+
+// Add loading animation CSS
+const style = document.createElement('style');
+style.textContent = `
+  .quote-loading {
+      opacity: 0.7;
+      transition: opacity 0.3s;
+  }
+  
+  @keyframes loadingPulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+  }
+`;
+document.head.appendChild(style);
