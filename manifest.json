@@ -1,17 +1,38 @@
 {
-  "manifest_version": 3,
-  "name": "Enhanced New Tab",
-  "version": "1.2",
-  "description": "A visually appealing new tab with working widgets and customization.",
-  "permissions": [
-    "storage",
-    "activeTab",
-     "https://api.openweathermap.org/*"
-],
-"host_permissions": [
-    "https://api.openweathermap.org/*"
-  ],
-  "chrome_url_overrides": {
-    "newtab": "index.html"
-  }
+    "manifest_version": 2,
+    "name": "TimeSync",
+    "short_name": "TimeSync",
+    "version": "1.0.0",
+    "background": {
+        "scripts": [
+            "firebase/firebase-app-compat.js",
+            "firebase/firebase-auth-compat.js",
+            "firebase/firebase-database-compat.js",
+            "background.js"
+        ],
+        "persistent": true
+    },
+    "browser_action": {
+        "default_popup": "popup.html",
+        "default_title": "TimeSync"
+    },
+    "permissions": [
+        "tabs",
+        "storage",
+        "identity",
+        "webNavigation",
+        "https://*.firebaseio.com/",
+        "activeTab",
+        "https://api.openweathermap.org/*",
+        "<all_urls>"
+    ],
+    "host_permissions": ["<all_urls>" ,"https://api.openweathermap.org/*"],
+    "chrome_url_overrides": {
+        "newtab": "project1/index.html"
+    },
+    "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'",
+    "author": "Your Name",
+    "homepage_url": "https://your-website.com",
+    "offline_enabled": true,
+    "incognito": "split"
 }

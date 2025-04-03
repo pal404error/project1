@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TimeSync</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- Firebase Scripts -->
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+        <style>
+            :root {
+                --background: #000000;
+                --card-bg: #1C1C1E;
+                --primary: #0A84FF;
+                --success: #30D158;
+                --warning: #FF9F0A;
+                --danger: #FF453A;
+                --text-primary: #FFFFFF;
+                --text-secondary: rgba(255, 255, 255, 0.6);
+                --border-radius: 16px;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                width: 400px;
+                min-height: 600px;
+                margin: 0;
+                padding: 0;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                background-color: var(--background);
+                color: var(--text-primary);
+                position: relative;
+                overflow-x: hidden;
+            }
+
+            /* Vector background */
+            .background-vector {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.1;
+                pointer-events: none;
+                background: 
+                    radial-gradient(circle at 10% 20%, var(--primary) 0%, transparent 50%),
+                    radial-gradient(circle at 90% 80%, var(--success) 0%, transparent 50%),
+                    radial-gradient(circle at 50% 50%, var(--warning) 0%, transparent 50%);
+                filter: blur(80px);
+                z-index: 0;
+            }
+
+            .container {
+                position: relative;
+                z-index: 1;
+                padding: 20px;
+            }
+
+            .header {
+                padding: 20px;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                position: sticky;
+                top: 0;
+                z-index: 2;
+            }
+
+            .header h1 {
+                font-size: 24px;
+                font-weight: 600;
+                background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .card {
+                background: var(--card-bg);
+                border-radius: var(--border-radius);
+                padding: 20px;
+                margin-bottom: 20px;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            }
+
+            .stats-card {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .total-time {
+                font-size: 32px;
+                font-weight: 600;
+                background: linear-gradient(135deg, var(--primary), var(--success));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .label {
+                color: var(--text-secondary);
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+
+            .tab-container {
+                display: flex;
+                background: var(--card-bg);
+                border-radius: 20px;
+                padding: 4px;
+                margin-bottom: 20px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .tab-button {
+                flex: 1;
+                padding: 12px;
+                border: none;
+                background: transparent;
+                color: var(--text-secondary);
+                border-radius: 16px;
+                font-size: 15px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .tab-button.active {
+                background: var(--primary);
+                color: white;
+                box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+            }
+
+            .tab-content {
+                display: none;
+            }
+
+            .tab-content.active {
+                display: block;
+                animation: fadeIn 0.3s ease;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0 8px;
+            }
+
+            th {
+                color: var(--text-secondary);
+                font-weight: 500;
+                text-align: left;
+                padding: 12px;
+            }
+
+            td {
+                background: var(--card-bg);
+                padding: 16px;
+                color: var(--text-primary);
+            }
+
+            tr td:first-child {
+                border-top-left-radius: 12px;
+                border-bottom-left-radius: 12px;
+            }
+
+            tr td:last-child {
+                border-top-right-radius: 12px;
+                border-bottom-right-radius: 12px;
+            }
+
+            .rank {
+                color: var(--primary);
+                font-weight: 600;
+            }
+
+            .time {
+                color: var(--text-secondary);
+                text-align: right;
+            }
+
+            /* Login form styling */
+            .login-card {
+                background: var(--card-bg);
+                border-radius: var(--border-radius);
+                padding: 30px;
+                margin: 20px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            input {
+                width: 100%;
+                padding: 16px;
+                margin: 8px 0;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.05);
+                color: var(--text-primary);
+                font-size: 16px;
+                transition: all 0.3s ease;
+            }
+
+            input:focus {
+                outline: none;
+                border-color: var(--primary);
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            button {
+                width: 100%;
+                padding: 16px;
+                border: none;
+                border-radius: 12px;
+                background: var(--primary);
+                color: white;
+                font-size: 16px;
+                font-weight: 500;
+                margin: 8px 0;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            button:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+            }
+
+            #signOutButton {
+                background: transparent;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: var(--text-primary);
+            }
+
+            .chart-container {
+                position: relative;
+                height: 300px;
+                margin: 20px 0;
+            }
+
+            /* Progress bars */
+            .progress-bar {
+                height: 8px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+                overflow: hidden;
+                margin: 8px 0;
+            }
+
+            .progress-fill {
+                height: 100%;
+                border-radius: 4px;
+                transition: width 0.3s ease;
+            }
+
+            .progress-fill.productive {
+                background: var(--success);
+            }
+
+            .progress-fill.unproductive {
+                background: var(--danger);
+            }
+
+            .category-tag {
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 500;
+            }
+
+            .tag-productive {
+                background: rgba(48, 209, 88, 0.2);
+                color: var(--success);
+            }
+
+            .tag-unproductive {
+                background: rgba(255, 69, 58, 0.2);
+                color: var(--danger);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="background-vector"></div>
+
+        <div id="loginSection">
+            <div class="login-card">
+                <h2>TimeSync</h2>
+                <input type="email" id="emailInput" placeholder="Email">
+                <input type="password" id="passwordInput" placeholder="Password">
+                <button id="signInButton">Sign In</button>
+                <button id="signUpButton">Sign Up</button>
+                <p id="authError"></p>
+            </div>
+        </div>
+
+        <div id="mainContent" style="display: none;">
+            <div class="header">
+                <h1>TimeSync</h1>
+                <button id="signOutButton">Sign Out</button>
+            </div>
+
+            <div class="container">
+                <div class="tab-container">
+                    <button class="tab-button active" data-tab="overview">Overview</button>
+                    <button class="tab-button" data-tab="productivity">Productivity</button>
+                </div>
+
+                <div id="overview" class="tab-content active">
+                    <div class="stats-card">
+                        <div class="label">Total Time Today</div>
+                        <div class="total-time" id="totalTimeToday">0s</div>
+                    </div>
+
+                    <div class="chart-container card">
+                        <canvas id="pie-chart"></canvas>
+                    </div>
+
+                    <div class="card">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Website</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="webList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="productivity" class="tab-content">
+                    <div class="card">
+                        <div class="productivity-stat">
+                            <div>
+                                <div class="label">Productive Time</div>
+                                <div class="total-time" id="productiveTime">0s</div>
+                            </div>
+                            <div class="category-tag tag-productive">
+                                <span id="productivePercentage">0%</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill productive" id="productiveBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="productivity-stat">
+                            <div>
+                                <div class="label">Unproductive Time</div>
+                                <div class="total-time" id="unproductiveTime">0s</div>
+                            </div>
+                            <div class="category-tag tag-unproductive">
+                                <span id="unproductivePercentage">0%</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill unproductive" id="unproductiveBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container card">
+                        <canvas id="productivity-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="popup.js"></script>
+    </body>
+</html>

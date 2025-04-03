@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src * gap://ready file:; style-src 'self' 'unsafe-inline' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; img-src * data: 'unsafe-inline'">
+    <title>TimeSync</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
+</head>
+
+<body>
+    <div id="dashboard">
+        <div class="widget" id="clock-widget">
+            <div id="analog-clock">
+                <div class="clock-face">
+                    <!-- Clock numbers -->
+                    <div class="number number-1">1</div>
+                    <div class="number number-2">2</div>
+                    <div class="number number-3">3</div>
+                    <div class="number number-4">4</div>
+                    <div class="number number-5">5</div>
+                    <div class="number number-6">6</div>
+                    <div class="number number-7">7</div>
+                    <div class="number number-8">8</div>
+                    <div class="number number-9">9</div>
+                    <div class="number number-10">10</div>
+                    <div class="number number-11">11</div>
+                    <div class="number number-12">12</div>
+                    
+                    <!-- Clock hands -->
+                    <div class="hand hour-hand" id="hour-hand"></div>
+                    <div class="hand minute-hand" id="minute-hand"></div>
+                    <div class="hand second-hand" id="second-hand"></div>
+                    
+                    <!-- Center dot -->
+                    <div class="center-dot"></div>
+                </div>
+            </div>
+        </div>
+        <div class="widget" id="weather">
+            <div class="container">
+                <div class="weather-card">
+                    <div id="weather-info" class="animate__animated animate__fadeIn">
+                        <h3 id="city-name">Vadodara</h3>
+                        <p id="date"></p>
+                        <img id="weather-icon" src="" alt="Weather Icon">
+                        <p id="temperature"></p>
+                        <p id="description"></p>
+                        <p id="wind-speed"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="widget" id="search-bar">
+            <input type="text" placeholder="Search the web..." id="search-input">
+            <button onclick="search()">Search</button>
+        </div>
+        <div class="widget" id="todo-list">
+            <div id="todo-container">
+                <!-- todo list header -->
+                <div id="header">
+                    <h1>To Do List</h1>
+                </div>
+
+                <!-- create input box -->
+                <div id="todo-form">
+                    <input type="text" class="input-item" name="input_box" id="input-box" placeholder="Add Task" />
+
+                    <!-- add button  -->
+                    <!-- <button id="input-button" onclick="addTask()">Add</button> -->
+                </div>
+
+                <!-- task list -->
+                <h2>Task List</h2>
+                <ul id="list-container"></ul>
+
+                <hr>
+
+                <!-- task list counter  -->
+                <div class="counter-container">
+                    <div id="task-counters">
+                        Completed: <span id="completed-counter">0</span> | Uncompleted:
+                        <span id="uncompleted-counter">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="widget" id="quote"></div>
+        <div class="widget" id="quote-2">
+            <div class="quote-content">
+                <span class="quote-icon">❝</span>
+                <p id="quote-text-2"></p>
+                <p id="quote-author-2"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src=
+"https://code.jquery.com/jquery-3.6.0.min.js">
+	</script>
+	<script src=
+"https://momentjs.com/downloads/moment.min.js">
+	</script> -->
+    <script src="script.js"></script>
+</body>
+
+</html>
