@@ -1,27 +1,27 @@
-
-const WEATHER_API_KEY = '08e262942a75425b206f76950a964fcf'; 
-
+// Weather API configuration
+const WEATHER_API_KEY = '08e262942a75425b206f76950a964fcf'; // You'll need to get an API key from OpenWeatherMap
+// Weather API configuration e with your actual API key
 const CITY = 'Vadodara';
 const COUNTRY_CODE = 'IN';
 
-
+// Function to fetch weather data
 async function getWeather() {
     try {
-        const response = await fetch(`https:
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY},${COUNTRY_CODE}&appid=${WEATHER_API_KEY}&units=metric`);
         
-        
+        // Check if the response is ok
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
         
-        
+        // Debug log - check what data we're receiving
         console.log('Weather data:', data);
 
-        
+        // Check if we have all the required data before updating the DOM
         if (data && data.main && data.weather && data.weather[0]) {
-            
+            // Update weather information
             document.getElementById('date').textContent = new Date().toLocaleDateString('en-IN', {
                 weekday: 'long',
                 year: 'numeric',
@@ -33,9 +33,9 @@ async function getWeather() {
             document.getElementById('description').textContent = data.weather[0].description;
             document.getElementById('wind-speed').textContent = `Wind: ${data.wind.speed} m/s`;
             
-            
+            // Update weather icon
             const iconCode = data.weather[0].icon;
-            const iconUrl = `https:
+            const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
             const weatherIcon = document.getElementById('weather-icon');
             weatherIcon.src = iconUrl;
             weatherIcon.alt = data.weather[0].description;
@@ -53,41 +53,41 @@ async function getWeather() {
     }
 }
 
-
+// Update weather immediately and then every 30 minutes
 getWeather();
 setInterval(getWeather, 30 * 60 * 1000);
 
-
-
+// var $ = jQuery;
+// $(document).ready(function(){  });
 
 document.addEventListener("DOMContentLoaded", function () {
-    updateClock();
-    setInterval(updateClock, 1000);
+    // updateClock();
+    // setInterval(updateClock, 1000);
 
-    function updateClock() {
-        const now = new Date();
-        const seconds = now.getSeconds();
-        const minutes = now.getMinutes();
-        const hours = now.getHours();
+    // function updateClock() {
+    //     const now = new Date();
+    //     const seconds = now.getSeconds();
+    //     const minutes = now.getMinutes();
+    //     const hours = now.getHours();
 
-        
-        const secondsDegrees = ((seconds / 60) * 360) + 180;
-        const minutesDegrees = ((minutes / 60) * 360) + ((seconds/60)*6) + 180;
-        const hoursDegrees = ((hours / 12) * 360) + ((minutes/60)*30) + 180;
+    //     // Calculate rotation angles
+    //     const secondsDegrees = ((seconds / 60) * 360) + 180;
+    //     const minutesDegrees = ((minutes / 60) * 360) + ((seconds/60)*6) + 180;
+    //     const hoursDegrees = ((hours / 12) * 360) + ((minutes/60)*30) + 180;
 
-        
-        const secondHand = document.getElementById('second-hand');
-        const minuteHand = document.getElementById('minute-hand');
-        const hourHand = document.getElementById('hour-hand');
+    //     // Apply rotations
+    //     const secondHand = document.getElementById('second-hand');
+    //     const minuteHand = document.getElementById('minute-hand');
+    //     const hourHand = document.getElementById('hour-hand');
 
-        if (secondHand && minuteHand && hourHand) {
-            secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
-            minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
-            hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
-        }
-    }
+    //     if (secondHand && minuteHand && hourHand) {
+    //         secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+    //         minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+    //         hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+    //     }
+    // }
 
-    
+    // To-Do List Functionality
     var myNodelist = document.getElementsByTagName("LI");
     for (var i = 0; i < myNodelist.length; i++) {
         var span = document.createElement("SPAN");
@@ -138,14 +138,14 @@ function newElement() {
         }
       }
 
-    
+    // Background Color Changer
     document.getElementById("bg-color").addEventListener("input", function () {
         document.body.style.backgroundColor = this.value;
     });
 });
 
 
-
+//try start
 const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
 const completedCounter = document.getElementById("completed-counter");
@@ -180,16 +180,16 @@ function addTask() {
 
   listContainer.appendChild(li);
 
-  
+  // clear the input field
   inputBox.value = " ";
 
-  
+  // attach event listeners to the new task
   const checkbox = li.querySelector("input");
   const editBtn = li.querySelector(".edit-btn");
   const taskSpan = li.querySelector("span");
   const deleteBtn = li.querySelector(".delete-btn");
 
-  
+  // strike out the completed task
   checkbox.addEventListener("click", function () {
     li.classList.toggle("completed", checkbox.checked);
     updateCounters();
@@ -214,7 +214,7 @@ function addTask() {
   updateCounters();
 }
 
-
+// add task when pressing Enter key
 inputBox.addEventListener("keyup", function (event) {
   if (event.key === "Enter") {
     addTask();
@@ -222,41 +222,41 @@ inputBox.addEventListener("keyup", function (event) {
 });
 
 
+// ... existing weather code remains the same ...
 
-
-
+// Search Bar Functionality
 function search() {
   const searchInput = document.getElementById('search-input');
   const searchQuery = searchInput.value.trim();
   
   if (searchQuery) {
-      
-      const searchUrl = `https:
+      // Default to Google search, but you can change this to any search engine
+      const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
       window.open(searchUrl, '_blank');
-      searchInput.value = ''; 
+      searchInput.value = ''; // Clear the input after search
   }
 }
 
-
+// Add event listener for Enter key in search input
 document.getElementById('search-input').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
       search();
   }
 });
 
-
+// Background Settings Functionality
 function initializeBackgroundSettings() {
   const bgColorPicker = document.getElementById('bg-color');
   const dashboard = document.getElementById('dashboard');
   
-  
+  // Load saved background color from localStorage
   const savedBgColor = localStorage.getItem('dashboardBgColor');
   if (savedBgColor) {
       document.body.style.background = savedBgColor;
       bgColorPicker.value = savedBgColor;
   }
 
-  
+  // Add background style options
   const bgStyleSelect = document.createElement('select');
   bgStyleSelect.id = 'bg-style';
   bgStyleSelect.className = 'bg-setting-input';
@@ -275,11 +275,11 @@ function initializeBackgroundSettings() {
       bgStyleSelect.appendChild(option);
   });
 
-  
+  // Load saved background style
   const savedBgStyle = localStorage.getItem('dashboardBgStyle') || 'gradient1';
   bgStyleSelect.value = savedBgStyle;
 
-  
+  // Add the select element to background settings
   const backgroundSettings = document.getElementById('background-settings');
   backgroundSettings.innerHTML = `
       <h3>Customize Background</h3>
@@ -298,7 +298,7 @@ function initializeBackgroundSettings() {
       <button id="reset-bg" class="bg-setting-button">Reset to Default</button>
   `;
 
-  
+  // Event Listeners for background settings
   document.getElementById('bg-color').addEventListener('input', updateBackground);
   document.getElementById('bg-style').addEventListener('change', updateBackground);
   document.getElementById('bg-opacity').addEventListener('input', updateBackground);
@@ -328,13 +328,13 @@ function updateBackground() {
 
   document.body.style.background = background;
   
-  
+  // Update widget transparency
   const widgets = document.querySelectorAll('.widget');
   widgets.forEach(widget => {
       widget.style.backgroundColor = `rgba(255, 255, 255, ${opacity / 100})`;
   });
 
-  
+  // Save settings
   localStorage.setItem('dashboardBgColor', color);
   localStorage.setItem('dashboardBgStyle', style);
   localStorage.setItem('dashboardOpacity', opacity);
@@ -360,15 +360,15 @@ function resetBackground() {
   updateBackground();
 }
 
-
+// Initialize background settings when the page loads
 document.addEventListener('DOMContentLoaded', initializeBackgroundSettings);
 
 
-
+// Function to fetch quotes
 async function getQuotes() {
   try {
-      
-      const response = await fetch('https:
+      // Using proxy to handle CORS
+      const response = await fetch('https://cors-anywhere.herokuapp.com/https://api.quotable.io/quotes/random?limit=2', {
           method: 'GET',
           headers: {
               'Accept': 'application/json',
@@ -381,7 +381,7 @@ async function getQuotes() {
 
       const quotes = await response.json();
       
-      
+      // Update first quote widget with loading state
       const quoteElement = document.getElementById('quote');
       quoteElement.innerHTML = `
           <p>${quotes[0].content}</p>
@@ -390,7 +390,7 @@ async function getQuotes() {
           </p>
       `;
       
-      
+      // Update second quote widget
       const quoteText2 = document.getElementById('quote-text-2');
       const quoteAuthor2 = document.getElementById('quote-author-2');
       
@@ -401,7 +401,7 @@ async function getQuotes() {
 
   } catch (error) {
       console.error('Error fetching quotes:', error);
-      
+      // Fallback quotes in case of API failure
       const fallbackQuotes = [
           {
               content: "The best way to predict the future is to create it.",
@@ -413,7 +413,7 @@ async function getQuotes() {
           }
       ];
 
-      
+      // Update with fallback quotes
       document.getElementById('quote').innerHTML = `
           <p>${fallbackQuotes[0].content}</p>
           <p style="color: var(--primary-color); font-weight: 500; margin-top: 10px;">
@@ -426,13 +426,13 @@ async function getQuotes() {
   }
 }
 
-
+// Initial quote load
 getQuotes();
 
-
+// Update quotes every 30 minutes
 setInterval(getQuotes, 30 * 60 * 1000);
 
-
+// Add loading animation CSS
 const style = document.createElement('style');
 style.textContent = `
   .quote-loading {

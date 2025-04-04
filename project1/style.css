@@ -1,8 +1,8 @@
-
-@import url('https:
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap');
 
 :root {
- 
+  /* Light mode variables */
   --primary-color: #4f46e5;
   --primary-light: #818cf8;
   --secondary-color: #3730a3;
@@ -15,7 +15,7 @@
   --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   --item-bg: #f1f5f9;
   
- 
+  /* Dark mode variables */
   --dark-widget-bg: rgba(30, 41, 59, 0.95);
   --dark-text-color: #f1f5f9;
   --dark-text-secondary: #cbd5e1;
@@ -74,8 +74,21 @@ body {
   box-shadow: var(--shadow-lg);
 }
 
-
-
+/* Widget Layouts */
+/* #clock-widget {
+  grid-column: span 3;
+  grid-row: span 2;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
 
 #weather {
   grid-column: span 3;
@@ -95,7 +108,7 @@ body {
   grid-row: span 3;
 }
 
-
+/* Clock Widget */
 #analog-clock {
   position: relative;
   width: 250px;
@@ -117,7 +130,7 @@ body {
   align-items: center;
 }
 
-
+/* Clock numbers */
 .number {
   position: absolute;
   width: 100%;
@@ -142,7 +155,7 @@ body {
 .number-11 { transform: rotate(330deg); }
 .number-12 { transform: rotate(0deg); }
 
-
+/* Rotate the text back */
 .number-1 span { transform: rotate(-30deg); }
 .number-2 span { transform: rotate(-60deg); }
 .number-3 span { transform: rotate(-90deg); }
@@ -156,7 +169,7 @@ body {
 .number-11 span { transform: rotate(-330deg); }
 .number-12 span { transform: rotate(0deg); }
 
-
+/* Clock hands */
 .hand {
   position: absolute;
   bottom: 50%;
@@ -198,7 +211,7 @@ body {
   z-index: 3;
 }
 
-
+/* Optional: Add a subtle outer ring */
 .clock-face::before {
   content: '';
   position: absolute;
@@ -208,7 +221,7 @@ body {
   border-radius: 50%;
 }
 
-
+/* Search Bar */
 #search-bar {
   display: flex;
   gap: 12px;
@@ -250,7 +263,7 @@ body {
   transform: translateY(-2px);
 }
 
-
+/* Weather Card */
 .weather-card {
   text-align: center;
   padding: 20px 0;
@@ -293,7 +306,7 @@ body {
   margin: 10px 0;
 }
 
-
+/* Todo List */
 #todo-container {
   height: 100%;
   display: flex;
@@ -380,7 +393,7 @@ body {
   font-size: 14px;
 }
 
-
+/* Quote Widget */
 #quote {
   font-style: italic;
   text-align: center;
@@ -410,7 +423,7 @@ body {
   right: 20px;
 }
 
-
+/* Responsive Design */
 @media (max-width: 1400px) {
   #clock-widget, #weather {
     grid-column: span 6;
@@ -460,7 +473,7 @@ body {
   }
 }
 
-
+/* Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -476,7 +489,7 @@ body {
   animation: fadeIn 0.5s ease-out;
 }
 
-
+/* Update the grid layout first */
 #quote {
   grid-column: span 6;
 }
@@ -485,7 +498,7 @@ body {
   grid-column: span 6;
 }
 
-
+/* Enhanced Quote Widgets Styling */
 .quote-content {
   position: relative;
   padding: 20px;
@@ -551,13 +564,13 @@ body {
   margin-top: 10px;
 }
 
-
+/* Hover effects */
 #quote:hover, #quote-2:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-lg);
 }
 
-
+/* Responsive adjustments */
 @media (max-width: 1024px) {
   #quote, #quote-2 {
     grid-column: span 12;
