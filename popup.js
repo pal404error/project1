@@ -49,8 +49,21 @@ const productiveDomains = [
     'udemy.com',
     'medium.com',
     'dev.to',
-    'gmail.com'
+    'gmail.com',
+    'github.dev',
+    'firebase.google.com',
+    'notion.so',
+    'trello.com',
+    'slack.com',
+    'zoom.us',
+    'calendly.com',
+    'w3schools.com',
+    'khanacademy.org',
+    'asana.com',
+    'clickup.com',
+    'openai.com'
 ];
+
 
 const unproductiveDomains = [
     'youtube.com',
@@ -59,8 +72,19 @@ const unproductiveDomains = [
     'twitter.com',
     'reddit.com',
     'netflix.com',
-    'tiktok.com'
+    'tiktok.com',
+    'pinterest.com',
+    '9gag.com',
+    'twitch.tv',
+    'buzzfeed.com',
+    'discord.com',
+    'primevideo.com',
+    'hotstar.com',
+    'quora.com',
+    'imdb.com',
+    'tumblr.com'
 ];
+
 
 // Wrap Firebase initialization in DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
